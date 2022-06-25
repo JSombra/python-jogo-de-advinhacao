@@ -1,27 +1,44 @@
 def jogar():
-    print("*********************************")
-    print("***Bem vindo ao jogo da Forca!***")
-    print("*********************************")
+    print("\033[1;90;100m*********************************\033[m")
+    print("\033[1;90;100m***Bem vindo ao jogo da Forca!***\033[m")
+    print("\033[1;90;100m*********************************\033[m")
 
-    palavra_secreta = "folgada"
-    letras_acertadas = ["_", "_", "_", "_", "_", "_", "_"]
+    palavra_secreta = "folgada".upper()
+    letras_acertadas = ["_" for letra in palavra_secreta]
 
     enforcou = False
     acertou = False
-    print(letras_acertadas)
+    tentativas = 6
+    print("\n{}".format(letras_acertadas))
+
     while(not enforcou and not acertou):
         chute = input("Qual a letra?: ")
-        chute.strip()
+        chute = chute.strip().upper()
         index = 0
 
-        for letra in palavra_secreta:
-            if(chute.upper() == letra.upper()):
-                letras_acertadas[index] = letra
-            index += 1
-            letras_faltando = str(letras_acertadas.count("_"))
-        print("Ainda faltam {} letras não advinhadas".format(letras_faltando))
-        print(letras_acertadas)
-    print("Fim do jogo")
+        if(len(chute) > 1):
+            print("\n\033[1;30;41mEscreva apenas uma letra de cada vez\033[m")
+        else:
+            if(chute in palavra_secreta):
+                for letra in palavra_secreta:
+                    if(chute == letra):
+                        letras_acertadas[index] = letra
+                    index += 1
+
+            else:
+                tentativas -=1
+                print("\nOps, Você errou ainda restam {} tentativas".format(tentativas))
+            enforcou = tentativas == 0
+            acertou = "_" not in letras_acertadas
+            print("\n{}".format(letras_acertadas))
+            
+    if(acertou):
+        print("\n\033[0;30;42mVocê acertou a palavra.\033[m")
+    else:
+        print("\n\033[1;30;43mVocê não descobriu a palavra.\033[m")
+    
+    print("\nFim do jogo")
+
 
 if(__name__ == "__main__"):
     jogar()
